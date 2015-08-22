@@ -30,6 +30,30 @@ var BinarySearchTree = function(value) {
     if (obj.right) obj.right.depthFirstLog(func);
   };
   
+  obj.breadthFirstLog = function(func, level) {
+    // Recursion:
+    var newLevel = [];
+    var level = level || [obj];
+
+    for (var i = 0; i < level.length; i++) {
+      func(level[i].value);
+      if (level[i].left) newLevel.push(level[i].left);
+      if (level[i].right) newLevel.push(level[i].right);
+    }
+
+    if(newLevel.length>0) obj.breadthFirstLog(func, newLevel);
+    /*  Queue:
+        var queue = new Queue;
+        queue.enqueue(obj);
+        while (!queue.isEmpty()) {
+          var current = queue.dequeue();
+          func(current);
+          queue.enqueue(current.left);
+          queue.enqueue(current.right);
+        }
+    */
+  }
+
   return obj;
 };
 
