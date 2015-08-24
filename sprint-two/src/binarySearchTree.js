@@ -12,6 +12,7 @@ var BinarySearchTree = function(value) {
     } else {
       obj[side] = BinarySearchTree(input);
     }
+
   };
 
   obj.contains = function(input) {     
@@ -29,32 +30,53 @@ var BinarySearchTree = function(value) {
     if (obj.left) obj.left.depthFirstLog(func);
     if (obj.right) obj.right.depthFirstLog(func);
   };
+
+  obj.traverseInOrder = function(node, func) {
+    if (node === null) return;
+    obj.traverseInOrder(node.left, func); 
+    func(node.value);
+    obj.traverseInOrder(node.right, func);
+  };
   
-  obj.breadthFirstLog = function(func, level) {
-    // Recursion:
-    var newLevel = [];
-    var level = level || [obj];
-
-    for (var i = 0; i < level.length; i++) {
-      func(level[i].value);
-      if (level[i].left) newLevel.push(level[i].left);
-      if (level[i].right) newLevel.push(level[i].right);
+  obj.breadthFirstLog = function(func) {
+    var queue = Queue();    
+    queue.enqueue(obj);
+    while (queue.size() > 0) {
+      var current = queue.dequeue();
+      func(current.value);
+      if (current.left) queue.enqueue(current.left);
+      if (current.right) queue.enqueue(current.right);
     }
-
-    if(newLevel.length>0) obj.breadthFirstLog(func, newLevel);
-    /*  Queue:
-        var queue = new Queue;
-        queue.enqueue(obj);
-        while (!queue.isEmpty()) {
-          var current = queue.dequeue();
-          func(current);
-          queue.enqueue(current.left);
-          queue.enqueue(current.right);
-        }
-    */
-  }
+  };
 
   return obj;
+};
+
+var Queue = function(){
+  var someInstance = {};
+
+  var storage = {};
+  var end = 0;
+  var start = 0;
+
+  someInstance.enqueue = function(value){
+    storage[end] = value;
+    end++;
+  };
+
+  someInstance.dequeue = function(){
+    if (end - start) {
+      var result = storage[start];
+      delete storage[start];
+      start++;
+      return result;
+    }
+  };
+
+  someInstance.size = function(){
+    return end - start;
+  };
+  return someInstance;
 };
 
 
@@ -63,4 +85,5 @@ var BinarySearchTree = function(value) {
 insert: O(log(n))
 contains: O(log(n)) 
 depthFirstLog: O(n)
+breadthFirstLog: O(n)
  */

@@ -50,4 +50,17 @@ describe('binarySearchTree', function() {
     binarySearchTree.breadthFirstLog(func);
     expect(array).to.eql([5,2,6,1,3,4]);
   });
+  it('should execute a callback on every value in a tree in sorted order using "traverseInOrder"', function(){
+    var array = [];
+    var func = function(value){ array.push(value); };
+    binarySearchTree.insert(2);
+    binarySearchTree.insert(1);
+    binarySearchTree.insert(3);
+    binarySearchTree.insert(4);
+    binarySearchTree.insert(6);
+    binarySearchTree.traverseInOrder(binarySearchTree, func);
+    expect(array).to.eql([1,2,3,4,5,6]);
+  });
+  
+ 
 });
